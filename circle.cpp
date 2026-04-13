@@ -23,3 +23,49 @@ int main()
 
 }
 */
+#include <iostream>
+using namespace std;
+
+
+class SimpleCircle
+{
+    public:
+        // construct with param
+        SimpleCircle(int *Radius_in)
+        {
+            itsRadius = new int; // memory allocate
+            *itsRadius = *Radius_in;
+
+
+        }
+
+        // copy construct 
+        SimpleCircle(const SimpleCircle &c_in)
+        {
+            itsRadius = new int;
+            *itsRadius = *(c_in.itsRadius);
+        }
+
+        // decosntruct
+        ~SimpleCircle()
+        {
+            delete itsRadius; // release memory
+            itsRadius = nullptr; // not necessary, for safety concern
+        }
+
+        // set value to Radius of the circle
+        void setR(int value_to_set)
+        {
+            *itsRadius = value_to_set;
+        }
+
+        // get value of the Radius of the cirlcle
+        int getR()
+        {
+            return *itsRadius;
+        }
+
+    private:
+        int *itsRadius; // pointer points the radius of the cirlce
+
+};
