@@ -46,6 +46,18 @@ class SimpleCircle
             *itsRadius = *(c_in.itsRadius);
         }
 
+
+        // assignment operator reload
+        SimpleCircle& operator = (const SimpleCircle &other)
+        {
+            if (this != &other)
+            {
+                delete itsRadius;
+                itsRadius = new int(*other.itsRadius);
+            }
+            return *this;
+        }
+
         // decosntruct
         ~SimpleCircle()
         {
@@ -60,7 +72,7 @@ class SimpleCircle
         }
 
         // get value of the Radius of the cirlcle
-        int getR()
+        int getR() const
         {
             return *itsRadius;
         }
