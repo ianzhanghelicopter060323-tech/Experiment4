@@ -3,52 +3,28 @@
 */
 
 #include <iostream>
-#define SIZE 10
 using namespace std;
 
 
-class NewPrt
-{
-    public:
-        NewPrt()
-        {
-            cout<<"CONSTRUCT CALLED"<<endl;
-            pointer = new int[SIZE]; 
-        }
-        
-        ~NewPrt()
-        {
-            cout<<"DECONSTRUCT CALLED"<<endl;
-            delete [] pointer;
-            pointer = nullptr;
-        }
+int main() {
+    int* p = new int[10]; // allocate 10 memory spaces
 
+    // envalued
+    for (int i = 0; i < 10; ++i) 
+    { 
+        p[i] = i + 1;
+    }
 
-        void prtPrint() const
-        {
-            for (int i=0; i<SIZE; i++)
-                cout<<pointer[i]<<" ";
+    // print values
+    for (int i = 0; i < 10; ++i) 
+    {
+        cout << p[i] << " ";
+    }
+    cout << '\n';
 
-            cout<<'\n';
-        }
+    // memory spaces free
+    delete[] p;
+    p = nullptr;
 
-        void setPointer(int value_input, int pos_input)
-        {
-            pointer[pos_input] = value_input;
-        }
-    private:
-        int *pointer; // int pointer. size 10
-};
-
-
-int main()
-{
-    NewPrt ptr;
-
-    // pointer envalued
-    for (int i=0; i<SIZE; i++)
-        ptr.setPointer(i+1, i);
-
-    ptr.prtPrint();
     return 0;
 }
