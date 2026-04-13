@@ -233,7 +233,7 @@ ArrayOfPoints(ArrayOfPoints &AoP)
 
     points = /*(1)*/ new Point[numberOfPoints];
     for (int i=0; i</*(5)*/numberOfPoints; i++)
-        points[i].move(/*(2)*/AoP.points->GetX(),AoP.points->GetY());
+        points[i].move(/*(2)*/AoP.points[i].GetX(),AoP.points[i].GetY());
 }
 
     ~ArrayOfPoints()
