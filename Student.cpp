@@ -107,6 +107,8 @@ public:
         cout << "The Physics grade:" << Phi << endl;
         //cout << "The Data Structure grade:" << Data << endl;
         cout << "Sum of the grade:" << Sum_of_grade << endl;
+
+        cout<<'\n';
     }
 
     //Calculate the sum of all grades
@@ -118,7 +120,7 @@ public:
 
     // output math grade
     // for convenience, add a function to otput Math
-    int mathOutput() const
+    double mathOutput() const
     {
         return Math;
     }
@@ -160,17 +162,17 @@ int main(void)
     Student *stu = new Student[STUNUM]; 
     
     // 3 stu obects envalued
-    stu[0].Input(1, "Alice", 80, 85);
-    stu[1].Input(2,"Bill", 75, 90);
-    stu[2].Input(3, "Charles", 95, 60);
+    stu[0].Input(1, "Alice", 80.5, 85);
+    stu[1].Input(2,"Bill", 75, 91.5);
+    stu[2].Input(3, "Charles", 95, 61.5);
 
     // Student grade show
     for (int i=0; i<STUNUM; i++)
         stu[i].Show();
     
     // find the sum of math and all lectures
-    int sumMath = 0;
-    int sumAll = 0;
+    double sumMath = 0;
+    double sumAll = 0;
     for (int i=0; i<STUNUM; i++)
     {
         sumMath += stu[i].mathOutput();
@@ -181,5 +183,6 @@ int main(void)
     cout<<"Total math grade:"<<sumMath<<endl;
     cout<<"Total grade of all the students:"<<sumAll<<endl;
 
+    delete [] stu;
     return 0;
 }
