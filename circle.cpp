@@ -31,10 +31,10 @@ class SimpleCircle
 {
     public:
         // construct with param
-        SimpleCircle(int *Radius_in)
+        SimpleCircle(int Radius_in)
         {
             itsRadius = new int; // memory allocate
-            *itsRadius = *Radius_in;
+            *itsRadius = Radius_in;
 
 
         }
@@ -67,5 +67,19 @@ class SimpleCircle
 
     private:
         int *itsRadius; // pointer points the radius of the cirlce
-
 };
+
+
+int main()
+{
+
+         SimpleCircle c1(10);
+         cout<<"c1's radius is:  "<<c1.getR()<<endl;
+
+         SimpleCircle c2(c1);
+         c2.setR(20);
+         cout<<"c1's radius is:  "<<c1.getR()<<endl;
+         cout<<"c2's radius is:  "<<c2.getR()<<endl;
+
+         return 0;
+}
