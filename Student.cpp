@@ -16,13 +16,14 @@
 
 #include <iostream>
 #include <cstring>
-
+#define STUNUM 3
 using namespace std;
 
 
 class Student
 {
 public:
+
     //construct without param
     Student()
     {
@@ -32,21 +33,21 @@ public:
 
         Math = 0.0;
         Phi = 0.0;
-        Data = 0.0;
-        Sum = 0.0;
+        //Data = 0.0;
+        Sum_of_grade = 0.0;
     }
 
     //construct with param
-    Student(int No_in, const char *Name_in, double Math_in, double Phi_in, double Data_in)
+    Student(int No_in, const char *Name_in, double Math_in, double Phi_in/*, double Data_in*/)
     {
         Name = NULL;
         No = No_in;
         CopyName(Name_in);
         Math = Math_in;
         Phi = Phi_in;
-        Data = Data_in;
+        //Data = Data_in;
 
-        UpdateSum();
+        Sum_of_grade = Sum(); // renew Sum_of_grade
     }
 
     //construct copy
@@ -57,8 +58,8 @@ public:
         CopyName(stu.Name);
         Math = stu.Math;
         Phi = stu.Phi;
-        Data = stu.Data;
-        Sum = stu.Sum;
+        //Data = stu.Data;
+        Sum_of_grade = stu.Sum_of_grade;
     }
 
     // assignment operator
@@ -73,8 +74,8 @@ public:
         CopyName(stu.Name);
         Math = stu.Math;
         Phi = stu.Phi;
-        Data = stu.Data;
-        Sum = stu.Sum;
+        //Data = stu.Data;
+        Sum_of_grade = stu.Sum_of_grade;
 
         return *this;
     }
@@ -85,15 +86,16 @@ public:
         delete [] Name;
     }
 
-    //Information input
-    void Input(int No_in, const char *Name_in, double Math_in, double Phi_in, double Data_in)
+    //Stuent information input
+    void Input(int No_in, const char *Name_in, double Math_in, double Phi_in/*, double Data_in*/)
     {
         No = No_in;
         CopyName(Name_in);
         Math = Math_in;
         Phi = Phi_in;
-        Data = Data_in;
-        UpdateSum();
+        //Data = Data_in;
+        
+        Sum_of_grade = Sum(); // renew Sum_of_grade
     }
 
     //show student information
@@ -103,22 +105,25 @@ public:
         cout << "Student name:" << Name << endl;
         cout << "The Math grade:" << Math << endl;
         cout << "The Physics grade:" << Phi << endl;
-        cout << "The Data Structure grade:" << Data << endl;
-        cout << "Sum of the grade:" << Sum << endl;
+        //cout << "The Data Structure grade:" << Data << endl;
+        cout << "Sum of the grade:" << Sum_of_grade << endl;
     }
 
     //Calculate the sum of all grades
-    void GetSum(void)
+    double Sum()
     {
-        UpdateSum();
+        Sum_of_grade = Math + Phi;
+        return Sum_of_grade;
+    }
+
+    // output math grade
+    // for convenience, add a function to otput Math
+    int mathOutput() const
+    {
+        return Math;
     }
 
 private:
-    // get sum with private function
-    void UpdateSum(void)
-    {
-        Sum = Math + Phi + Data;
-    }
 
     // copy string Name with private function
     void CopyName(const char *Name_in)
@@ -144,56 +149,37 @@ private:
 
     double Math;
     double Phi;
-    double Data;
-    double Sum;
+    //double Data;
+    double Sum_of_grade;
 };
-
-
-
 
 
 int main(void)
 {
-    char name1[] = "Alice";
-    char name2[] = "Bob";
-    char name3[] = "Cindy";
+    // 3 constant memory spaces are allocated
+    Student *stu = new Student[STUNUM]; 
+    
+    // 3 stu obects envalued
+    stu[0].Input(1, "Alice", 80, 85);
+    stu[1].Input(2,"Bill", 75, 90);
+    stu[2].Input(3, "Charles", 95, 60);
 
-    // test default constructor
-    Student stu1;
-    cout << "stu1 default information:" << endl;
-    stu1.Show();
-    cout << endl;
+    // Student grade show
+    for (int i=0; i<STUNUM; i++)
+        stu[i].Show();
+    
+    // find the sum of math and all lectures
+    int sumMath = 0;
+    int sumAll = 0;
+    for (int i=0; i<STUNUM; i++)
+    {
+        sumMath += stu[i].mathOutput();
+        sumAll += stu[i].Sum();
+    }
 
-    // test constructor with parameters
-    Student stu2(1001, name1, 88.5, 92.0, 90.5);
-    cout << "stu2 information(auto-sum in constructor):" << endl;
-    stu2.Show();
-    cout << endl;
-
-    // test copy constructor
-    Student stu3(stu2);
-    cout << "stu3(copy from stu2) information:" << endl;
-    stu3.Show();
-    cout << endl;
-
-    // test Input with auto-sum
-    stu1.Input(1002, name2, 76.0, 85.5, 91.0);
-    cout << "stu1 information after Input(auto-sum):" << endl;
-    stu1.Show();
-    cout << endl;
-
-    // test GetSum function
-    Student stu4(1003, name3, 60.0, 70.0, 80.0);
-    stu4.GetSum();
-    cout << "stu4 information after calling GetSum:" << endl;
-    stu4.Show();
-    cout << endl;
-
-    // test assignment operator
-    Student stu5;
-    stu5 = stu2;
-    cout << "stu5 information after assignment from stu2:" << endl;
-    stu5.Show();
+    // sum-calculation outcome output
+    cout<<"Total math grade:"<<sumMath<<endl;
+    cout<<"Total grade of all the students:"<<sumAll<<endl;
 
     return 0;
 }

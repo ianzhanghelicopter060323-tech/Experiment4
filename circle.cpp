@@ -35,8 +35,6 @@ class SimpleCircle
         {
             itsRadius = new int; // memory allocate
             *itsRadius = Radius_in;
-
-
         }
 
         // copy construct 
