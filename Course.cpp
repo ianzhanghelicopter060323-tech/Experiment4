@@ -51,16 +51,15 @@ class CourseSchedule
 {
     public:
 
-        CourseSchedule(Course c)
+        CourseSchedule(): size(0)
         {
-            course_in_schedule[size] = c;
-            size++;
+
         }
 
-        /*~CourseSchedule()
+        CourseSchedule(const Course &c): size(0)
         {
-            delete [] course_in_schedule;
-        }*/
+            add(c);
+        }
 
 
         /*=========test============*/
@@ -73,10 +72,10 @@ class CourseSchedule
         /*=========test============*/
         void Test_elemALLout() const
         {
-            if (size == -1)
+            if (size == 0)
                 return;
-                
-            for (int j=size; j>=0; j--)
+
+            for (int j = 0; j < size; j++)
                 cout << course_in_schedule[j].courseOutput() << " ";
             cout << "\n";
         }
@@ -84,30 +83,48 @@ class CourseSchedule
 
 
         // add course TO LAST in course schedule
-        void add(Course c)
+        void add(const Course &c)
         {
+            if (size >= MAX_COURSE_SIZE)
+                return;
+
+            course_in_schedule[size] = c;
             size++;
-            course_in_schedule[size] = c.courseOutput();
         }
 
-        // remove the LAST course frome course schedule
-        void remove()
+        // remove first matched course from course schedule
+        void remove(const Course &c)
         {
-            if (size < 0)
-                size = -1;
-            
-            // change couse_in_schedule size
+            if (size == 0)
+                return;
+
+            int removeIndex = -1;
+            for (int i = 0; i < size; i++)
+            {
+                // find position to remove
+                if (course_in_schedule[i].courseOutput() == c.courseOutput())
+                {
+                    removeIndex = i;
+                    break;
+                }
+            }
+
+            if (removeIndex == -1)
+                return;
+
+            // move elements forward
+            for (int i = removeIndex; i < size - 1; i++)
+            {
+                course_in_schedule[i] = course_in_schedule[i + 1];
+            }
+
             size--;
         }
 
-        static int size; // size of array(course_in_schedule)
-
     private:
         Course course_in_schedule[MAX_COURSE_SIZE]; // (basic requuiremnt) using array to store courses
+        int size; // current number of courses
 };
-
-
-int CourseSchedule::size = -1; // when no Couse in course_in_schedule, size = -1
 
 
 int main()
@@ -116,11 +133,8 @@ int main()
     Course c2("CPP");
     Course c3("Physics");
 
-    // size should = 0
-    cout<<CourseSchedule::size<<'\n'<<endl;
-
-    // size should = 1
     CourseSchedule CS(c1);
+    // size should = 1
     cout << "c1 Couse in Course Schedule: "
          << CS.Test_returnSize() << endl;
 
@@ -139,19 +153,19 @@ int main()
 
     // remove c3
     // size should be 2
-    CS.remove();
+    CS.remove(c3);
     cout << "c3 Couse REMOVED in Course Schedule: "
          << CS.Test_returnSize() << endl;
 
     // remove c2
     // size should be 1
-    CS.remove();
+    CS.remove(c2);
     cout << "c2 Couse REMOVED in Course Schedule: "
          << CS.Test_returnSize() << endl;
 
     // remove c1
     // size should be 0
-    CS.remove();
+    CS.remove(c1);
     cout << "c1 Couse REMOVED in Course Schedule: "
          << CS.Test_returnSize() << endl;
 
