@@ -14,7 +14,9 @@ add和remove函数用来添加和删除一个coureschedule中的course，
 #include <iostream>
 #include <string>
 using namespace std;
+
 #define MAX_COURSE_SIZE 100
+
 
 class Course
 {
@@ -51,12 +53,14 @@ class CourseSchedule
 {
     public:
 
-        CourseSchedule(): size(0)
+        CourseSchedule()
         {
-
+            new Node;
+            head = nullptr;
+            size = 0;
         }
 
-        CourseSchedule(const Course &c): size(0)
+        CourseSchedule(const Course &c)
         {
             add(c);
         }
@@ -85,45 +89,63 @@ class CourseSchedule
         // add course TO LAST in course schedule
         void add(const Course &c)
         {
-            if (size >= MAX_COURSE_SIZE)
-                return;
+            Node *node = new Node;
+            // initialize value
+            node->course = c.courseOutput();
+            
+            // link the node
+            if (head == nullptr)
+                head = node;
+            else
+            {
+                Node *cur = head;
+                while (cur->next != nullptr)
+                    cur = cur->next;
+  
+                cur->next = node;
+            }
 
-            course_in_schedule[size] = c;
-            size++;
+            // update size
+            size ++;
         }
 
         // remove first matched course from course schedule
         void remove(const Course &c)
         {
-            if (size == 0)
-                return;
+            Node *prev = nullptr;
+            Node *cur = head;
 
-            int removeIndex = -1;
-            for (int i = 0; i < size; i++)
+            // find targeted Course
+            while ((cur->next != nullptr) && (cur->course.courseOutput() != c.courseOutput()))
             {
-                // find position to remove
-                if (course_in_schedule[i].courseOutput() == c.courseOutput())
-                {
-                    removeIndex = i;
-                    break;
-                }
+                prev = cur;
+                cur =cur->next;
             }
 
-            if (removeIndex == -1)
-                return;
+            // cur reach the end of the linked list
+            if (cur == nullptr)
+                return ;
+            // find correct node
+            if (prev != nullptr)
+                prev->next = cur->next;
+            // find the correct node which is head (prev be nullptr)
+            else
+                head = cur->next;
 
-            // move elements forward
-            for (int i = removeIndex; i < size - 1; i++)
-            {
-                course_in_schedule[i] = course_in_schedule[i + 1];
-            }
-
-            size--;
+            delete cur;
+            size --;
         }
 
     private:
-        Course course_in_schedule[MAX_COURSE_SIZE]; // (basic requuiremnt) using array to store courses
-        int size; // current number of courses
+        // Node for linked list
+        struct Node
+        {
+            Course course;
+            Node *next;
+        };
+
+        Node *head;
+        int size;
 };
 
 
