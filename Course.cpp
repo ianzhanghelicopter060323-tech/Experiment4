@@ -38,13 +38,16 @@ class CourseSchedule
 {
     public:
 
+        // default construct
         CourseSchedule(): head(nullptr) {}
 
+        // construct with param
         CourseSchedule(const Course &c): head(nullptr)
         {
             add(c);
         }
 
+        // copy construct for deep copy
         CourseSchedule(const CourseSchedule &other) : head(nullptr)
         {
             Node *cur = other.head;
@@ -100,7 +103,7 @@ class CourseSchedule
             node->next = nullptr;
 
             // initialize value
-            node->course = c.courseOutput();
+            node->course = c;
             
             // link the node
             if (head == nullptr)
