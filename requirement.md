@@ -227,6 +227,229 @@ int main()
 # new.cpp要求
 声明一个int型指针，用new语句为其分配包含10个元素的地址空间，并赋值为1到10并打印；然后释放空间 
 
+# this.cpp 要求
+
+请编写一个 C++ 程序，定义一个 `Student` 类，重点练习 `this` 指针的使用。
+
+本题要求你掌握以下三种 `this` 指针常见用法：
+
+```cpp
+this->成员名
+```
+
+用于区分成员变量和同名形参。
+
+```cpp
+if (this != &other)
+```
+
+用于判断是否发生自赋值。
+
+```cpp
+return *this;
+```
+
+用于返回当前对象本身，支持链式调用。
+
+---
+
+## 一、类的数据成员
+
+类中包含以下私有数据成员：
+
+```cpp
+char name[30];
+int id;
+int score;
+```
+
+---
+
+## 二、构造函数
+
+定义一个有参构造函数：
+
+```cpp
+Student(const char* name, int id, int score);
+```
+
+要求：
+
+1. 构造函数的形参名必须和数据成员名相同。
+2. 必须使用 `this->` 区分成员变量和形参。
+3. `name` 使用 `strcpy` 或 `strncpy` 复制。
+
+示例：
+
+```cpp
+Student stu("Tom", 1001, 85);
+```
+
+---
+
+## 三、成员函数 `setInfo`
+
+定义成员函数：
+
+```cpp
+Student& setInfo(const char* name, int id, int score);
+```
+
+要求：
+
+1. 形参名也必须和数据成员名相同。
+2. 必须使用 `this->` 给成员变量赋值。
+3. 函数返回当前对象本身：
+
+```cpp
+return *this;
+```
+
+这样可以支持链式调用。
+
+---
+
+## 四、成员函数 `addScore`
+
+定义成员函数：
+
+```cpp
+Student& addScore(int score);
+```
+
+要求：
+
+1. 参数名必须叫 `score`。
+2. 表示给当前学生的成绩增加 `score` 分。
+3. 必须使用 `this->score` 区分成员变量和形参。
+4. 返回 `*this`，支持链式调用。
+
+例如：
+
+```cpp
+stu.addScore(5).addScore(10);
+```
+
+---
+
+## 五、输出函数 `print`
+
+定义成员函数：
+
+```cpp
+void print() const;
+```
+
+输出格式如下：
+
+```cpp
+Name: Tom, ID: 1001, Score: 100
+```
+
+---
+
+## 六、赋值运算符重载
+
+为 `Student` 类重载赋值运算符：
+
+```cpp
+Student& operator=(const Student& other);
+```
+
+要求：
+
+1. 使用下面的语句判断是否不是自己给自己赋值：
+
+```cpp
+if (this != &other)
+```
+
+2. 如果不是自赋值，则复制 `name`、`id`、`score`。
+
+3. 函数最后返回当前对象本身：
+
+```cpp
+return *this;
+```
+
+---
+
+## 七、主函数测试要求
+
+在 `main` 函数中完成以下测试。
+
+### 1. 创建两个学生对象
+
+```cpp
+Student s1("Alice", 1001, 80);
+Student s2("Bob", 1002, 90);
+```
+
+### 2. 输出两个对象的信息
+
+调用 `print()` 分别输出 `s1` 和 `s2` 的信息。
+
+### 3. 测试 `addScore` 链式调用
+
+```cpp
+s1.addScore(5).addScore(10).print();
+```
+
+要求输出 `s1` 加分后的信息。
+
+### 4. 测试 `setInfo` 和 `addScore` 的链式调用
+
+```cpp
+s2.setInfo("Cindy", 1003, 88).addScore(7).print();
+```
+
+要求输出修改并加分后的 `s2` 信息。
+
+### 5. 测试赋值运算符
+
+```cpp
+s1 = s2;
+s1.print();
+```
+
+要求观察 `s1` 是否被正确赋值为 `s2` 的信息。
+
+### 6. 测试自赋值
+
+```cpp
+s1 = s1;
+s1.print();
+```
+
+要求程序能够正常运行，且 `s1` 的信息不发生错误变化。
+
+---
+
+## 八、程序整体要求
+
+1. 程序需要包含头文件：
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+```
+
+2. `Student` 类中的数据成员必须是 `private`。
+3. 构造函数、`setInfo`、`addScore` 中必须显式使用 `this->`。
+4. 赋值运算符重载中必须写出：
+
+```cpp
+if (this != &other)
+```
+
+5. `setInfo`、`addScore`、赋值运算符重载函数都必须返回：
+
+```cpp
+return *this;
+```
+
+6. 程序应能完整编译运行，并输出测试结果。
 # Student.cpp要求
 在前一次的学生类基础上做添加，写一个学生成绩类：
 
