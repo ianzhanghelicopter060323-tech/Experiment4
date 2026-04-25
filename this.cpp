@@ -13,7 +13,7 @@ class Student
         Student(const char* name, int id, int score);
         ~Student() {};
 
-        Student &operator=(const Student &other);
+        Student &operator=(const Student &other); // unnecessary with name[30]
 
         Student& setInfo(const char* name, int id, int score);
         Student& addScore(int score);
@@ -40,7 +40,7 @@ Student& Student::operator=(const Student &other)
 {
     if (this != &other)
     {
-        strncpy(this->name, other.name, 29);
+        strncpy(this->name, other.name, 29); // this actually IS NOT deep copy
         this->name[29] = '\0';
 
         id = other.id;
