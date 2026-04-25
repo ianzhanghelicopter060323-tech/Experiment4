@@ -72,6 +72,25 @@ class ArrayOfPoints
             delete [] points;
             points = nullptr;
         }
+        
+        /*================================================================*/
+        // operator = reload function in case it is shallow copy
+        ArrayOfPoints& operator=(const ArrayOfPoints &other)
+        {
+            if (this != &other)
+            {
+                delete [] points;
+
+                numberOfPoints = other.numberOfPoints;
+                points = new Point [numberOfPoints];
+                for (int i=0; i<numberOfPoints; i++)
+                    points[i] = other.points[i];
+
+            }
+
+            return *this;
+        }
+        /*================================================================*/
 
         // element finding function: return quotation of the element
         Point &element(int index)
@@ -111,6 +130,22 @@ int main()
 
     pointsArray1.element(0).print(); // should be (25, 30)
     pointsArray1.element(1).print(); // sould be (35, 40)
+
+    // test operator= reload
+    ArrayOfPoints pointsArray3(0);
+    pointsArray3 = pointsArray1;
+
+    pointsArray1.element(0).move(45, 50);
+    pointsArray1.element(1).move(55, 60);
+    
+    // show axis
+    cout << "pointsArray1:" << endl;
+    pointsArray1.element(0).print(); // should be (45, 50)
+    pointsArray1.element(1).print(); // should be (55, 60)
+
+    cout << "pointsArray3: " << endl;
+    pointsArray3.element(0).print(); // should be (25, 30)
+    pointsArray3.element(1).print(); // should be (35, 40)
 
     return 0;
 }
